@@ -7,6 +7,3 @@ jobs:
       - name: hello
         run: |
           echo "Hello World"
-      - name: this will fail
-        run: exit 1;
-    
