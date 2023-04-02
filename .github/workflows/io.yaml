@@ -12,5 +12,6 @@ jobs:
           import os
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
             print(f'VAL=true', file=f)
+          print(os.environ['GITHUB_OUTPUT'])
       - name: print value
         run: echo "the value is ${{ steps.set-var.outputs.VAL }}"
