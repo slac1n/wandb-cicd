@@ -29,7 +29,7 @@ jobs:
           github.rest.issues.getLabel({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            name: env.LABEL
+            name: "${{ env.LABEL }}"
           })
       
     - name: Create label (only if label does not exist)
@@ -41,7 +41,7 @@ jobs:
           github.rest.issues.createLabel({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            name: env.LABEL
+            name: "${{ env.LABEL }}"
           })
           
     - name: Add label
@@ -52,5 +52,5 @@ jobs:
             owner: context.repo.owner,
             repo: context.repo.repo,
             issue_number: context.issue.number
-            labels: [env.LABEL]
+            labels: ["${{ env.LABEL }}"]
           })
