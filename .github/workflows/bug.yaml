@@ -8,6 +8,7 @@ permissions:
   
 env:
   MAGIC_COMMENT: "/bug"
+  LABEL: ':bug: bug'
   
 jobs:
   label-comment:
@@ -20,13 +21,36 @@ jobs:
       if: contains(github.event.comment.body, env.MAGIC_COMMENT)
       run: echo "magic comment detected"
       
-    - name: Parse value from the magic command
+    - name: Get label
       uses: actions/github-script@v6
       if: steps.filter.outcome == 'success'
+      with:
+        script: |
+          github.rest.issues.getLabel({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            name: env.LABEL
+          })
+      
+    - name: Create label (only if label does not exist)
+      uses: actions/github-script@v6
+      # create label only if the previous step failed 
+      if: ${{ failure() }}
       with:
         script: |
           github.rest.issues.createLabel({
             owner: context.repo.owner,
             repo: context.repo.repo,
-            name: ':bug: bug'
+            name: env.LABEL
+          })
+          
+    - name: Add label
+      uses: actions/github-script@v6
+      with:
+        script: |
+          github.rest.issues.addLabels({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            issue_number: context.issue.number
+            labels: [env.LABEL]
           })
