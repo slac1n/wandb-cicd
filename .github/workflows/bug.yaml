@@ -1,0 +1,32 @@
+name: Label Bug
+on: issue_comment
+
+permissions:
+  contents: read
+  issues: write
+  pull-requests: write
+  
+env:
+  MAGIC_COMMENT: "/bug"
+  
+jobs:
+  label-comment:
+    # only on pull request comments
+    if: ${{ github.event.issue.pull_request }}
+    runs-on: ubuntu-latest
+    steps:
+    - name: filter for magic comment
+      id: filter
+      if: contains(github.event.comment.body, env.MAGIC_COMMENT)
+      run: echo "magic comment detected"
+      
+    - name: Parse value from the magic command
+      uses: actions/github-script@v6
+      if: steps.filter.outcome == 'success'
+      with:
+        script: |
+          github.rest.issues.createLabel({
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            name: ':bug: bug'
+          })
