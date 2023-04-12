@@ -12,7 +12,7 @@ env:
 jobs:
   label-comment:
     # only on pull request comments
-    if: ${{ github.event.issue.pull_request }} && ${{ contains(github.event.comment.body, env.MAGIC_COMMENT) }}
+    if: (github.event.issue.pull_request != null) && contains(github.event.comment.body, env.MAGIC_COMMENT)
     runs-on: ubuntu-latest
     steps:    
     - name: Get label
