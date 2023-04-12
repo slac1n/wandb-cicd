@@ -1,0 +1,26 @@
+name: Compare to baseline
+on: issue_comment
+
+permissions:
+  issues: write
+  pull-requests: write
+  
+jobs:
+  baseline-comparision:
+    # only on pull request comments
+    if: ${{ github.event.issue.pull_request }} && contains(github.event.comment.body, '/wandb')
+    steps:
+      - name: Parse String
+        id: parse-string
+        run: |
+          # Extract the string after the keyword using regular expressions
+          string=$(echo "${{ github.event.comment.body }}" | grep -oP '(?<=/wandb\s)[^\s]*')
+
+          # Set the extracted string as an output
+          echo "STRING_TO_PARSE=${string}" >> "$GITHUB_OUTPUT"
+
+      - name: Next Step
+        run: |
+          # Access the extracted string from the output
+          echo "The parsed string is: ${{ steps.parse-string.outputs.string_to_parse }}"
+
