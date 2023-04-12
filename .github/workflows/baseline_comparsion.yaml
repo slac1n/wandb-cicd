@@ -7,6 +7,7 @@ permissions:
   
 jobs:
   baseline-comparision:
+    runs-on: ubuntu-latest
     # only on pull request comments
     if: ${{ github.event.issue.pull_request }} && contains(github.event.comment.body, '/wandb')
     steps:
