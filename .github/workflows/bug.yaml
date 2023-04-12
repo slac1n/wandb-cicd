@@ -6,13 +6,12 @@ permissions:
   pull-requests: write
   
 env:
-  MAGIC_COMMENT: "/bug"
   LABEL: ':bug: bug'
   
 jobs:
   label-comment:
     # only on pull request comments
-    if: (github.event.issue.pull_request != null) && contains(github.event.comment.body, env.MAGIC_COMMENT)
+    if: (github.event.issue.pull_request != null) && contains(github.event.comment.body, '/bug')
     runs-on: ubuntu-latest
     steps:    
     - name: Get label
