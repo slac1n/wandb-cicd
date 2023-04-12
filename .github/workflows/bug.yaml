@@ -2,7 +2,6 @@ name: Label Bug
 on: issue_comment
 
 permissions:
-  contents: read
   issues: write
   pull-requests: write
   
@@ -13,17 +12,11 @@ env:
 jobs:
   label-comment:
     # only on pull request comments
-    if: ${{ github.event.issue.pull_request }}
+    if: ${{ github.event.issue.pull_request }} && contains(github.event.comment.body, env.MAGIC_COMMENT)
     runs-on: ubuntu-latest
-    steps:
-    - name: filter for magic comment
-      id: filter
-      if: contains(github.event.comment.body, env.MAGIC_COMMENT)
-      run: echo "magic comment detected"
-      
+    steps:    
     - name: Get label
       uses: actions/github-script@v6
-      if: steps.filter.outcome == 'success'
       with:
         script: |
           github.rest.issues.getLabel({
