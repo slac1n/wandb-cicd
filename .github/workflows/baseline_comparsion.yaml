@@ -4,6 +4,7 @@ on: issue_comment
 permissions:
   issues: write
   pull-requests: write
+  contents: read
   
 jobs:
   baseline-comparision:
