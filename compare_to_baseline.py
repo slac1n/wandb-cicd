@@ -57,8 +57,9 @@ report.save()
 
 number = os.environ["ISSUE_NUMBER"]
 owner, repo = os.environ["REPO"].split("/")
+print(number, owner, repo)
 gitapi = GhApi(owner=owner, repo=repo)
 gitapi.issues.create_comment(
     number,
-    f"Hi, this is the link for the baseline comparision report you requested: {report.url}",
+    f"Hi, this is the link for the baseline comparision report you requested:",
 )
