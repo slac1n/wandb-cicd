@@ -55,7 +55,7 @@ pg = wr.PanelGrid(
 report.blocks = report.blocks[:1] + [pg] + report.blocks[1:]
 report.save()
 
-number = os.environ["ISSUE_NUMBER"]
+number = os.environ["NUMBER"]
 owner, repo = os.environ["REPO"].split("/")
 print(number, owner, repo)
 gitapi = GhApi(owner=owner, repo=repo)
