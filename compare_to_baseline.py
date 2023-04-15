@@ -55,11 +55,14 @@ pg = wr.PanelGrid(
 report.blocks = report.blocks[:1] + [pg] + report.blocks[1:]
 report.save()
 
-number = os.environ["NUMBER"]
-owner, repo = os.environ["REPO"].split("/")
-print(number, owner, repo)
-gitapi = GhApi(owner=owner, repo=repo)
-gitapi.issues.create_comment(
-    number,
-    f"Hi, this is the link for the baseline comparision report you requested:",
-)
+try:
+    owner, repo = os.environ["REPO"].split("/")
+    gitapi = GhApi(owner=owner, repo=repo)
+    gitapi.issues.create_comment(
+        os.environ["NUMBER"],
+        f"Hi, this is the link for the baseline comparision report you requested: {report.url}",
+    )
+except Exception as e:
+    print(e)
+    print("Seems like you are running this locally.")
+    print("Here is the link for the report: ", report.url)
