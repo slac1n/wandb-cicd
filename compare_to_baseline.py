@@ -62,6 +62,7 @@ try:
         os.environ["ISSUE_NUMBER"],
         f"Hi, this is the link for the baseline comparision report you requested: {report.url}",
     )
-except:
+except Exception as e:
+    print(e)
     print("Seems like you are running this locally.")
     print("Here is the link for the report: ", report.url)
