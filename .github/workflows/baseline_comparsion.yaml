@@ -11,6 +11,9 @@ jobs:
     # only on pull request comments
     if: (github.event.issue.pull_request != null) && contains(github.event.comment.body, '/wandb')
     steps:
+      - name: Copy Repository Contents
+        uses: actions/checkout@v3
+        
       - name: Parse String
         id: parse-string
         run: |
@@ -20,8 +23,13 @@ jobs:
           # Set the extracted string as an output
           echo "STRING_TO_PARSE=${string}" >> "$GITHUB_OUTPUT"
 
-      - name: Next Step
+      - name: Run comparision script
         run: |
-          # Access the extracted string from the output
-          echo "The parsed string is: ${{ steps.parse-string.outputs.string_to_parse }}"
-
+          pip install wandb ghapi
+          python compare_to_baseline.py
+        env:
+          RUN_ID_TO_COMPARE: ${{ steps.parse-string.outputs.string_to_parse }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
+          
