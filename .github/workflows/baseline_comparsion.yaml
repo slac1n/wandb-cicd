@@ -31,5 +31,6 @@ jobs:
           RUN_ID_TO_COMPARE: ${{ steps.parse-string.outputs.string_to_parse }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
+          ISSUE_NUMBER: ${{ github.event.number }} 
           WANDB_API_KEY: ${{ secrets.WANDB_API_KEY }}
           
